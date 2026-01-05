@@ -1,0 +1,7 @@
+node_modules
+dist
+.git
+.env
+serviceAccountKey.json
+coverage
+.DS_Store

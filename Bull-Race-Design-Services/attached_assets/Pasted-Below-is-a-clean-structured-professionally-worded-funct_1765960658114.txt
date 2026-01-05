@@ -1,0 +1,252 @@
+Below is a **clean, structured, professionally worded functional requirements document** for your **Bull Race Management Application**.
+I’ve reorganized, formatted, and rephrased the entire specification to make it suitable for design, development, or submission to Copilot/Figma/UI designers.
+
+---
+
+# **📘 Bull Race Management Application – Functional Requirements Document**
+
+## **1. Overview**
+
+The **Bull Race Management Application** is a responsive web platform built using **React + Bootstrap** with **Firebase** as backend.
+The application manages Bull Race events that are conducted **sequentially category-by-category** and enables:
+
+* Public users to **view race results, ongoing events, upcoming schedules**, and **register bull pairs**.
+* Administrators to **configure categories**, **approve registrations**, **conduct races**, track **lap timings**, and **generate leaderboards**.
+
+**No user authentication is required for public users.**
+Admin access will be configured manually.
+
+---
+
+# **2. Core Modules**
+
+## **2.1 Homepage**
+
+A responsive landing page containing:
+
+* **Photo Gallery Slider** (event images)
+* **Live Race Information** (if any ongoing race)
+* **Upcoming Race Schedule** (date, category, time)
+* Quick navigation buttons:
+
+  * Register Bull Pair
+  * View Leaderboard
+  * Historical Results
+
+---
+
+# **3. Category Management (Admin Only)**
+
+Admins will create and manage race categories.
+
+### **Category Fields**
+
+* Category Type (Sub-Juniors / Juniors / Seniors / Super Seniors)
+* Race Date
+* Category Time (in minutes)
+* Category Distance (meters per lap)
+* Metadata: `createdBy`, `createdAt`, `modifiedBy`, `modifiedAt`
+
+### **Rules**
+
+* Categories define how a race will be executed.
+* Races always run **sequentially** by category.
+
+---
+
+# **4. Bull Pair Registration**
+
+### **Used by:**
+
+* Public Users (online registration)
+* Admins (on-spot registration)
+
+### **Bull Pair Fields**
+
+* Bull Pair Name
+* Owner Names
+* Phone Number
+* Email (optional)
+* Category Type
+* Status: Pending → Approved/Rejected
+* Metadata: `createdAt`, `modifiedBy`, `modifiedAt`
+
+### **Process**
+
+1. Owners register bull pairs online.
+2. Admin reviews and updates status.
+3. Approved pairs are added to the race pool.
+
+---
+
+# **5. Race Management (Admin Only)**
+
+This module handles everything related to **conducting the race**.
+
+### **5.1 Pre-Race Setup**
+
+* Display all **approved pairs** in ascending registration order.
+* Admin can **shuffle the order** to finalize race sequence (lucky draw).
+* Once confirmed, race order is locked.
+
+---
+
+### **5.2 Running the Race (Pair-by-Pair)**
+
+Each pair row contains:
+
+* **Start Button** → Starts race timer for that pair.
+
+Race UI includes:
+
+* Stopwatch/timer
+* Lap creation option
+* Real-time time tracking
+
+---
+
+### **5.3 Lap Management**
+
+When a lap is completed, Admin clicks **"Add Lap"**.
+
+#### **Lap Fields:**
+
+* Lap Number
+* Distance Covered = (Category Distance × Lap Number)
+* Lap Time (mm:ss)
+* Total Time Until Lap
+* Remaining Time (Category Time – Total Time)
+
+#### **Special Functionality**
+
+* Admin must be able to **override the final lap distance**:
+
+  * Input format: **meters + feet + inches**
+    Example: *100 meters, 1 foot, 4 inches*
+
+---
+
+### **5.4 Leaderboard Logic**
+
+Leaderboard updates **automatically** based on lap timings.
+
+#### **Sorting Rule**
+
+* Compare timings **lap-by-lap**.
+* Pair with **less time** at any lap is ahead.
+* Order dynamically adjusts as each lap completes.
+
+##### **Example**
+
+Pair 1 laps: 10s → 15s → 5s
+Pair 2 laps: 7s → 20s → 25s
+
+* After Lap 1 → Pair 2 leads by 3s
+* After Lap 2 → Pair 1 leads by 2s
+* Leaderboard updates accordingly.
+
+---
+
+# **6. Live Race Results (Public Read-Only)**
+
+Normal users can view:
+
+* Ongoing race status
+* Current lap performance
+* Live leaderboard (auto-updated)
+* Upcoming races with date & time
+
+All information shown **in order of current ranking**.
+
+---
+
+# **7. Historical Data Module**
+
+Allows public users to browse **past race results**:
+
+* Filter by **Year**
+* Filter by **Category**
+* Show:
+
+  * Top performers
+  * Lap timings
+  * Winner summary
+
+---
+
+# **8. Photo Gallery**
+
+Homepage gallery with:
+
+* Auto slide
+* Full-screen modal view
+* Categories (if required later)
+
+---
+
+# **9. Technical Requirements**
+
+### **Frontend**
+
+* React (Hooks + Context/Redux optional)
+* Bootstrap 5 (fully responsive)
+* Stopwatch & lap timer logic in JS
+
+### **Backend**
+
+* Firebase Firestore DB
+* Firebase Storage (for images)
+* Firebase Hosting / Cloud Functions (optional)
+
+### **No Signup Required**
+
+Admin is configured manually in Firebase auth.
+
+---
+
+# **10. UI/UX Requirements**
+
+* Fully responsive across devices (mobile-first)
+* Intuitive dashboard for Admin
+* Engaging homepage with clear CTAs
+* Seamless race management with real-time updates
+* Clean leaderboard visualization
+* Smooth animations for gallery & leaderboards
+
+---
+
+# **11. Full Module Summary**
+
+| Module                       | Public User | Admin |
+| ---------------------------- | ----------- | ----- |
+| Homepage                     | ✔           | ✔     |
+| Photo Gallery                | ✔           | ✔     |
+| Bull Pair Registration       | ✔           | ✔     |
+| Category Management          | ✖           | ✔     |
+| Approve/Reject Registrations | ✖           | ✔     |
+| Race Conducting              | ✖           | ✔     |
+| Lap Tracking                 | ✖           | ✔     |
+| Leaderboard                  | ✔           | ✔     |
+| Live Race                    | ✔           | ✔     |
+| Historical Data              | ✔           | ✔     |
+
+---
+
+# **12. Final Notes for UI Designers & Developers**
+
+* Focus on **clean navigation** and **mobile-first layouts**.
+* Race module should feel like a **control panel** with real-time interactivity.
+* Leaderboard must be visually appealing & dynamic.
+* Admin workflows must be minimal clicks but highly powerful.
+
+---
+
+If you want, I can now generate:
+
+✅ **Figma UI prompts**
+✅ **Component-wise React architecture**
+✅ **Database schema for Firebase**
+✅ **Full Copilot prompt for code generation**
+✅ **ER diagram / Flow diagrams**
+
+Just tell me what you want next!
